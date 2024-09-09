@@ -1,5 +1,19 @@
 int time = 0; //sun/moon pos= (t, sqrt(r^2 - t^2)) as (x,y) 
-ArrayList<treeLeaf> leaves = new ArrayList<>();
+ArrayList<treeLeaf> leaves1 = new ArrayList<>();
+ArrayList<treeLeaf> leaves2 = new ArrayList<>();
+ArrayList<treeLeaf> leaves3 = new ArrayList<>();
+ArrayList<treeLeaf> leaves4 = new ArrayList<>();
+float housex1 = random(-200,200);
+float housex2 = random(300,600);
+float housey1 = random(350,400);
+float housey2 = random(350,400);
+float roofh1 = random(100,300);
+float roofh2 = random(100,300);
+float roofw1 = random(-10,60);
+float roofw2 = random(-10,60);
+float[] treex = new float[4];
+float[] treey = new float[4];
+float[] trees = new float[4];
 
 void setup(){
   size(1000,800);
@@ -9,9 +23,36 @@ void setup(){
   for(int i = 0; i < 200; i++){
     float r = sq(random(1,10));
     float t = random(0,2*PI);
-    float o = random(0,5);
+    float o = r*cos(t)*0.005;
     float s = random(60,70);
-    leaves.add(new treeLeaf(r,t,o,s));
+    leaves1.add(new treeLeaf(r,t,o,s));
+  }
+  for(int i = 0; i < 200; i++){
+    float r = sq(random(1,10));
+    float t = random(0,2*PI);
+    float o = r*cos(t)*0.005;
+    float s = random(60,70);
+    leaves2.add(new treeLeaf(r,t,o,s));
+  }
+  for(int i = 0; i < 200; i++){
+    float r = sq(random(1,10));
+    float t = random(0,2*PI);
+    float o = r*cos(t)*0.005;
+    float s = random(60,70);
+    leaves3.add(new treeLeaf(r,t,o,s));
+  }
+  for(int i = 0; i < 200; i++){
+    float r = sq(random(1,10));
+    float t = random(0,2*PI);
+    float o = r*cos(t)*0.005;
+    float s = random(60,70);
+    leaves4.add(new treeLeaf(r,t,o,s));
+  }
+  
+  for(int i = 0; i < 4; i++){
+    treex[i] = random(i*450,(i+1)*450);
+    treey[i] = random(0,200);
+    trees[i] = random(0.45,0.55);
   }
 }
 
@@ -61,10 +102,14 @@ void draw(){
   
   
   
+  drawTree(leaves1, treex[0], treey[0], trees[0]);
+  drawTree(leaves2, treex[1], treey[1],trees[1]);
+  drawTree(leaves3, treex[2], treey[2],trees[2]);
+  drawTree(leaves4, treex[3], treey[3],trees[3]);
   
+  drawHouse(housex1, housey1,roofw1,roofh1);
+  drawHouse(housex2, housey2,roofw2,roofh2);
   
-  drawHouse();
-  drawTree();
 }
 
 
@@ -98,9 +143,11 @@ void drawMoon(int t){
   circle(x,y,50);
   popMatrix();
 }
-void drawTree(){
+void drawTree(ArrayList<treeLeaf> leaves, float xx, float yy, float ss){
   pushMatrix();
-  translate(200,400);
+  scale(ss);
+  rectMode(CENTER);
+  translate(200 + xx,1000 + yy);
   fill(#935504);
   rect(0,125,50,300);
   fill(#04B723);
@@ -113,7 +160,7 @@ void drawTree(){
     float s = leaves.get(i).s;
     leaves.get(i).increment();
     
-    x+= 15*(noise(o) -0.5);
+    x+= 20*(noise(o) -0.5);
     circle(x,y,s);
   }
   popMatrix();
@@ -121,23 +168,34 @@ void drawTree(){
 
 
 
-void drawHouse(){
+void drawHouse(float x, float y, float roofw, float roofh){
+  pushMatrix();
+  translate(x,y);
+  scale(0.5);
+  
   rectMode(CENTER);
   fill(#950606);
   rect(600,500,300,300);
-  triangle(400,350,800,350,600,200);
+  drawRoof(roofw,roofh);
   fill(#935504);
   rect(675,575,75,150);
   
   
   rect(527.5, 477.5, 115, 115);
   
+  drawWindow();
+  
+  popMatrix();
+}
+void drawRoof(float roofw,float roofh){
+  triangle(400-roofw,350,800+roofw,350,600,roofh);
+}
+void drawWindow(){
   fill(#A2FAE3);
   rect(500,505,50,50);
   rect(555,505,50,50);
   rect(500,450,50,50);
   rect(555,450,50,50);
-  
   
 }
 
@@ -154,6 +212,6 @@ class treeLeaf{
     this.s = s;
   }
   public void increment(){
-    o+= 0.05;
+    o+= 0.02;
   }
 }
