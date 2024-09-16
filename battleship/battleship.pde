@@ -1,5 +1,6 @@
 int mode = 0;
 boolean gameStart = false;
+int frame = 0;
 /*
 0 start
  1 setup p1
@@ -45,6 +46,7 @@ class Ship {
   }
 }
 void draw() {
+  frame++;
   switch(mode) {
   case 0:
     title();
