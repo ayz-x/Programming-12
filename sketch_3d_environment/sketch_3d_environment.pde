@@ -319,7 +319,7 @@ void keyReleased() {
   }
 }
 void keyTyped(){
-  if(key == 'f'){
+  if(key == 'f' || key == 'F'){
     shoot = true;
   }
 }
